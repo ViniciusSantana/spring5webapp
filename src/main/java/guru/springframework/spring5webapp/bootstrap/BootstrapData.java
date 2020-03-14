@@ -25,27 +25,36 @@ public class BootstrapData implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        System.out.println("Started in Bootstrap");
+
+        Publisher prenticeHall = new Publisher("Prentice Hall", "Upper Saddle River", "Bergen County",  "New Jersey", "07458");
+        this.publisherRepository.save(prenticeHall);
+        System.out.println("Number of Publishers: " + publisherRepository.count());
+
         Author eric = new Author("Eric", "Evans");
         Book ddd = new Book("Domain Driven Desing", "123123");
         eric.getBooks().add(ddd);
         ddd.getAuthors().add(eric);
+        ddd.setPublisher(prenticeHall);
+        prenticeHall.getBooks().add(ddd);
+
+
         authorRepository.save(eric);
         bookRepository.save(ddd);
+        publisherRepository.save(prenticeHall);
 
         Author rod = new Author("Rod", "Johnson");
         Book noEJB = new Book("J2EE Development without EJB", "34234341431");
         rod.getBooks().add(noEJB);
         noEJB.getAuthors().add(rod);
+        prenticeHall.getBooks().add(noEJB);
+
         authorRepository.save(rod);
         bookRepository.save(noEJB);
+        publisherRepository.save(prenticeHall);
 
-        Publisher prenticeHall = new Publisher("Prentice Hall", "Upper Saddle River", "Bergen County",  "New Jersey", "07458");
-        this.publisherRepository.save(prenticeHall);
-
-        System.out.println("Started in Bootstrap");
         System.out.println("Number of Books: " + bookRepository.count());
-        System.out.println("Number of Publishers: " + publisherRepository.count());
-
+        System.out.println("Publisher Number of Boks: " + prenticeHall.getBooks().size());
 
     }
 }
